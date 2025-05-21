@@ -448,18 +448,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "async-ssh2-tokio"
-version = "0.8.14"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c8a622cb76944fb1c007326bf5b7889b7b5a8d5f904fb460e813135c42546cb0"
-dependencies = [
- "russh",
- "russh-sftp",
- "thiserror 2.0.12",
- "tokio",
-]
-
-[[package]]
 name = "async-stream"
 version = "0.3.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2607,6 +2595,16 @@ dependencies = [
  "libc",
  "wasi 0.11.0+wasi-snapshot-preview1",
  "windows-sys 0.52.0",
+]
+
+[[package]]
+name = "myssh"
+version = "0.1.0"
+dependencies = [
+ "russh",
+ "russh-sftp",
+ "thiserror 2.0.12",
+ "tokio",
 ]
 
 [[package]]
@@ -5686,13 +5684,12 @@ name = "xd-util"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "async-ssh2-tokio",
  "calamine",
  "eframe",
  "egui-notify",
  "minio-rsc",
+ "myssh",
  "rfd",
- "russh",
  "serde",
  "serde_json",
  "tokio",

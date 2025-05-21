@@ -1,9 +1,6 @@
 use crate::AppNotice;
-use async_ssh2_tokio::client::{AuthMethod, Client, CommandExecutedResult, ServerCheckMethod};
-use russh::ChannelMsg;
-use russh::client::Msg;
+use myssh::client::{AuthMethod, Client, CommandExecutedResult, ServerCheckMethod};
 use std::error::Error;
-use std::time::Duration;
 use tokio::sync::mpsc::UnboundedSender;
 
 pub struct SshClient {
