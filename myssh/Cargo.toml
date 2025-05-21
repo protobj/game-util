@@ -1,0 +1,24 @@
+[package]
+name = "myssh"
+version = "0.1.0"
+edition = "2024"
+
+
+[dependencies.russh]
+version = "0.51.1"
+
+[dependencies.russh-sftp]
+version = "2.0.8"
+
+[dependencies.thiserror]
+version = "2.0"
+
+[dependencies.tokio]
+version = "1"
+features = ["fs"]
+
+[dev-dependencies.dotenv]
+version = "0.15.0"
+
+[features]
+openssl = []
