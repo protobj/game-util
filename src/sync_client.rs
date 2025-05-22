@@ -21,20 +21,15 @@ pub fn sync_client_ui(app: &mut crate::App, ui: &mut egui::Ui) {
             }
 
             let ts_src_file = PathBuf::from(&csv_src_dir).join("CXTranslationText.ts");
-            if !check_file_exist(&ts_src_file) {
-                app.toasts
-                    .error("ts文件不存在")
-                    .duration(Duration::from_secs(5).into());
-                return;
-            }
-
-            let ts_dst_file = PathBuf::from(&app.client_dir)
-                .join("assets/scripts/framework/cx18n/CXTranslationText.ts");
-            if let Err(err) = copy_file(&ts_src_file, &ts_dst_file) {
-                app.toasts
-                    .error(format!("复制ts文件失败: {}", err))
-                    .duration(Duration::from_secs(5).into());
-                return;
+            if check_file_exist(&ts_src_file) {
+                let ts_dst_file = PathBuf::from(&app.client_dir)
+                    .join("assets/scripts/framework/cx18n/CXTranslationText.ts");
+                if let Err(err) = copy_file(&ts_src_file, &ts_dst_file) {
+                    app.toasts
+                        .error(format!("复制ts文件失败: {}", err))
+                        .duration(Duration::from_secs(5).into());
+                    return;
+                }
             }
 
             let csv_dst_dir = PathBuf::from(&app.client_dir).join("assets/csv");
