@@ -74,7 +74,7 @@ pub async fn restart_server(
         .join("&&");
     let rs = client.client.execute(&cmd).await?;
 
-    show_res(sender, &rs, 5);
+    show_res(sender, &rs, 2);
     sender.send(AppNotice::ServerRestartComplete)?;
     sender.send(AppNotice::Toast((
         format!("所有命令执行完成:{}", rs.exit_status),
