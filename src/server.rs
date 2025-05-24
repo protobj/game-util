@@ -1,9 +1,13 @@
 use crate::AppNotice;
 use eframe::egui;
 
-pub fn server_restart_ui(app: &mut crate::App, ui: &mut egui::Ui) {
+pub fn server_restart_ui(app: &mut crate::App, ui: &mut egui::Ui, build: bool) {
     ui.horizontal(|ui| {
-        ui.label("重启");
+        if build {
+            ui.label("更新并重启");
+        } else {
+            ui.label("重启");
+        }
         ui.add_space(10.0);
 
         if app.server_restart {
@@ -15,7 +19,7 @@ pub fn server_restart_ui(app: &mut crate::App, ui: &mut egui::Ui) {
         if ui.button("DEV").clicked() {
             let sender = app.notice_sender.clone().unwrap();
             tokio::spawn(async move {
-                if let Err(e) = crate::ssh_utils::restart_server("dev", &sender).await {
+                if let Err(e) = crate::ssh_utils::restart_server("dev", &sender,build).await {
                     sender
                         .send(AppNotice::ToastErr((format!("重启DEV失败:{:?}", e), 5)))
                         .unwrap();
@@ -26,7 +30,7 @@ pub fn server_restart_ui(app: &mut crate::App, ui: &mut egui::Ui) {
         if ui.button("TEST").clicked() {
             let sender = app.notice_sender.clone().unwrap();
             tokio::spawn(async move {
-                if let Err(e) = crate::ssh_utils::restart_server("test", &sender).await {
+                if let Err(e) = crate::ssh_utils::restart_server("test", &sender,build).await {
                     sender
                         .send(AppNotice::ToastErr((format!("重启TEST失败:{:?}", e), 5)))
                         .unwrap();

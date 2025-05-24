@@ -42,34 +42,31 @@ impl SshClient {
 pub async fn restart_server(
     env: &str,
     sender: &UnboundedSender<AppNotice>,
+    build: bool,
 ) -> Result<(), Box<dyn std::error::Error>> {
     let client = create_ssh_client().await?;
 
-    let commands: Vec<(String, String)> = vec![
-        (
+    let commands: Vec<String> = if build {
+        vec![
             "cd /xd-workspace/xd-server".to_string(),
-            "执行cd命令".to_string(),
-        ),
-        (
             "git switch xd-20250304-dev".to_string(),
-            "切换到分支".to_string(),
-        ),
-        ("git pull".to_string(), "执行git pull命令".to_string()),
-        (
+            "git pull".to_string(),
             format!("./upload_image_onekey_linux.sh {}", env).to_string(),
-            "执行上传脚本".to_string(),
-        ),
-        (
             format!("cd /docker/xd-server-{}", env),
-            "进入运行目录".to_string(),
-        ),
-        ("docker compose up -d".to_string(), "执行重启".to_string()),
-    ];
+            "docker compose up -d".to_string(),
+        ]
+    } else {
+        vec![
+            format!("cd /docker/xd-server-{}", env),
+            "docker compose restart".to_string(),
+        ]
+    };
+
     sender.send(AppNotice::ServerRestartStart)?;
 
     let cmd = commands
         .into_iter()
-        .map(|x| format!(" {} ", x.0))
+        .map(|x| x)
         .collect::<Vec<String>>()
         .join("&&");
     let rs = client.client.execute(&cmd).await?;

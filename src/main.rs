@@ -194,10 +194,13 @@ impl eframe::App for App {
                     sync_server::sync_server_ui(self, ui);
                 }
                 1 => {
-                    server::server_restart_ui(self, ui);
+                    server::server_restart_ui(self, ui,true);
                     ui.separator();
                     ui.add_space(10.0);
                     server::server_log_ui(self, ui);
+                    ui.separator();
+                    ui.add_space(10.0);
+                    server::server_restart_ui(self, ui,false);
                 }
                 _ => unreachable!(),
             }
